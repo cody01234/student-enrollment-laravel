@@ -76,12 +76,12 @@
 
   <nav>
     <ul>
-      <li><a href="#" onclick="showPage('home')">Home</a></li>
-      <li><a href="#" onclick="showPage('enrollment')">Enrollment</a></li>
-      <li><a href="#" onclick="showPage('teacher')">Teachers</a></li>
-      <li><a href="#" onclick="showPage('student')">Students</a></li>
-      <li><a href="#" onclick="showPage('room')">Rooms</a></li>
-      <li><a href="#" onclick="showPage('subject')">Subjects</a></li>
+      <li><a href="{{url('http://localhost:8000')}}" onclick="showPage('home')">Home</a></li>
+      <li><a href="{{url('/enrollment')}}" onclick="showPage('enrollment')">Enrollment</a></li>
+      <li><a href="{{url('/teacher')}}" onclick="showPage('teacher')">Teachers</a></li>
+      <li><a href="{{url('/student')}}" onclick="showPage('student')">Students</a></li>
+      <li><a href="{{url('/room')}}" onclick="showPage('room')">Rooms</a></li>
+      <li><a href="{{url('/subject')}}" onclick="showPage('subject')">Subjects</a></li>
     </ul>
   </nav>
 
@@ -102,6 +102,16 @@
 
   <section id="student">
     <h2>Add a Student</h2>
+    <div>
+      @if($errors->any())
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{$error}}</li>
+
+        @endforeach
+      </ul>
+      @endif
+    </div>
     <form method="post" action="{{route('student.store')}}">
       @csrf
       @method('post')

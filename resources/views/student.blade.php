@@ -76,12 +76,12 @@
 
   <nav>
     <ul>
-      <li><a href="#" onclick="showPage('home')">Home</a></li>
-      <li><a href="#" onclick="showPage('enrollment')">Enrollment</a></li>
-      <li><a href="#" onclick="showPage('teacher')">Teachers</a></li>
-      <li><a href="#" onclick="showPage('student')">Students</a></li>
-      <li><a href="#" onclick="showPage('room')">Rooms</a></li>
-      <li><a href="#" onclick="showPage('subject')">Subjects</a></li>
+      <li><a href="{{url('http://localhost:8000')}}" onclick="showPage('home')">Home</a></li>
+      <li><a href="{{url('/enrollment')}}" onclick="showPage('enrollment')">Enrollment</a></li>
+      <li><a href="{{url('/teacher')}}" onclick="showPage('teacher')">Teachers</a></li>
+      <li><a href="{{url('/student')}}" onclick="showPage('student')">Students</a></li>
+      <li><a href="{{url('/room')}}" onclick="showPage('room')">Rooms</a></li>
+      <li><a href="{{url('/subject')}}" onclick="showPage('subject')">Subjects</a></li>
     </ul>
   </nav>
 
@@ -102,7 +102,25 @@
 
   <section id="student">
     <h2>Student Page</h2>
-    <button onclick="addStudent()">Add Student</button>
+    <a href="{{URL::route('student.create');}}">Add Student</a>
+    <div>
+      <table border="1">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Address</th>
+        </tr>
+        @foreach($students as $student)
+        <tr>
+          <td>{{$student->id}}</td>
+          <td>{{$student->name}}</td>
+          <td>{{$student->age}}</td>
+          <td>{{$student->address}}</td>
+        </tr>
+        @endforeach
+      </table>
+    </div>
   </section>
 
   <section id="room">

@@ -11,7 +11,8 @@ class StudentController extends Controller
 
     public function root()
     {
-        return view('student');
+        $students = Student::all();
+        return view('student', ['students' => $students]);
     }
 
     public function create(){
@@ -25,7 +26,7 @@ class StudentController extends Controller
             'address' => 'required'
         ]);
 
-        Student::create($data);
+        $newStudent = Student::create($data);
 
         return redirect(route('student.root'));
     }
