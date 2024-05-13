@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class Teacher extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -14,24 +13,19 @@ class Student extends Model
         'email',
         'password',
         'sex',
-        'year_level',
         'birthday',
         'program_id'
-
     ];
+
+
     public function program()
     {
         return $this->belongsTo(Program::class);
     }
-    public function enrollments(): BelongsToMany
+
+    public function offers()
     {
-        return $this->belongsToMany(Enrollment::class);
+        return $this->hasMany(Offer::class);
     }
 
-    public function offers(): BelongsToMany
-
-    {
-        return $this->belongsToMany(Offer::class, 'enrollments', 'student_id', 'offer_id')
-            ->withTimestamps();
-    }
 }

@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function root(){
-        return view('EnrollmentDashboard');
+        return view('home');
     }
 }
