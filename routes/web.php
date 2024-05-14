@@ -2,6 +2,7 @@
 <?php
 # Arvin Reil Tupal
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -33,9 +34,18 @@ Route::post('/store-program', [ProgramController::class, 'store'] )->name('progr
 Route::get('/edit-program/{id}', [ProgramController::class, 'edit'])->name('program.edit');
 Route::put('/update-program/{id}', [ProgramController::class, 'update'])->name('program.update');
 
-//managing programs
+//managing subjects
 Route::get('/view-subjects', [SubjectController::class, 'index'] )->name('subject.index');
 Route::get('/create-subject', [SubjectController::class, 'create'] )->name('subject.create');
 Route::post('/store-subject', [SubjectController::class, 'store'] )->name('subject.store');
 Route::get('/edit-subject/{id}', [SubjectController::class, 'edit'])->name('subject.edit');
 Route::put('/update-subject/{id}', [SubjectController::class, 'update'])->name('subject.update');
+
+//managing subject offered
+Route::get('/view-subject-offered', [OfferController::class, 'index'])->name('offer.index');
+Route::get('/create-offer', [OfferController::class, 'create'])->name('offer.create');
+Route::post('/store-offer', [OfferController::class, 'store'])->name('offer.store');
+Route::get('/offer/assign-teacher/{offer_id}', [OfferController::class, 'assignTeacher'])->name('offer.assign_teacher');
+Route::post('/offer/store-teacher-assignment', [OfferController::class, 'storeTeacherAssignment'])->name('offer.store_teacher_assignment');
+Route::get('/edit-offer/{id}', [OfferController::class, 'edit'])->name('offer.edit');
+Route::put('/update-offer/{id}', [OfferController::class, 'update'])->name('offer.update');

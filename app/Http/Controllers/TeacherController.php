@@ -23,10 +23,15 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        //
         $programs = Program::all();
+
+        if ($programs->isEmpty()) {
+            return redirect()->back()->with('error', 'Cannot add a teacher as there are no existing programs.');
+        }
+
         return view('teacher.add', compact('programs'));
     }
+
 
     /**
      * Store a newly created resource in storage.

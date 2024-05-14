@@ -10,7 +10,7 @@ class Offer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'section_number',
+        'section',
         'schedule',
         'room',
         'capacity',

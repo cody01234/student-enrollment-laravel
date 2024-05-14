@@ -25,6 +25,11 @@ class StudentController extends Controller
     {
         //
         $programs = Program::all();
+
+        if ($programs->isEmpty()) {
+            return redirect()->back()->with('error', 'Cannot add a student as there are no existing programs.');
+        }
+
         return view('student.add', compact('programs'));
 
     }

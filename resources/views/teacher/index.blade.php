@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="container mt-lg-5">
+        @if (session('error'))
+            <div class="alert alert-danger text-center">
+                {{ session('error') }}
+            </div>
+        @endif
         <h1 class="text-center">Teachers</h1>
 
         @if (count($teachers) > 0)
