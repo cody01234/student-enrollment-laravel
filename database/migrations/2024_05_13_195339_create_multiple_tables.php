@@ -20,9 +20,10 @@ return new class extends Migration
 
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->default('password123');
             $table->char('sex');
             $table->date('birthday');
             $table->foreignId('program_id')->constrained()->onDelete('cascade');
@@ -31,9 +32,10 @@ return new class extends Migration
 
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->default('password123');
             $table->char('sex');
             $table->date('birthday');
             $table->integer('year_level');
@@ -76,11 +78,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('programs');
+        Schema::dropIfExists('enrollments');
+        Schema::dropIfExists('offers');
+        Schema::dropIfExists('subjects');
         Schema::dropIfExists('teachers');
         Schema::dropIfExists('students');
-        Schema::dropIfExists('subjects');
-        Schema::dropIfExists('offers');
-        Schema::dropIfExists('enrollments');
+        Schema::dropIfExists('programs');
+
     }
 };

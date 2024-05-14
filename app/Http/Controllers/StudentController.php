@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Program;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+
+        return view('student.index', compact('students'));
     }
 
     /**
@@ -21,6 +24,9 @@ class StudentController extends Controller
     public function create()
     {
         //
+        $programs = Program::all();
+        return view('student.add', compact('programs'));
+
     }
 
     /**
@@ -28,7 +34,20 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'sex' => 'required',
+            'birthday' => 'required|date',
+            'program_id' => 'required',
+            'year_level' => 'required|integer'
+        ]);
+
+
+        Student::create($validatedData);
+
+        return redirect()->route('student.index')->with('success', 'Student created successfully.');
+
     }
 
     /**
@@ -42,18 +61,48 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Student $student)
+    public function edit($id)
     {
         //
+        $programs = Program::all();
+        $student = Student::find($id);
+
+        if (!$student) {
+            return redirect()->route('student.index')->with('error', 'Student not found');
+
+        }
+
+        return view('student.edit', compact('student', 'programs'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
         //
-    }
+        $student = Student::find($id);
+
+        if (!$student) {
+            return redirect()->route('student.index')->with('error', 'Student not found');
+        }
+
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'sex' => 'required',
+            'birthday' => 'required|date',
+            'program_id' => 'required',
+            'year_level' => 'required|integer'
+        ]);
+
+        $student->update($validatedData);
+
+        return redirect()->route('student.index')->with('success', 'Student updated successfully.');
+}
+
+
+
 
     /**
      * Remove the specified resource from storage.

@@ -13,6 +13,9 @@ class SubjectController extends Controller
     public function index()
     {
         //
+        $subjects = Subject::all();
+
+        return view('subject.index', compact('subjects'));
     }
 
     /**
@@ -21,6 +24,7 @@ class SubjectController extends Controller
     public function create()
     {
         //
+        return view('subject.add');
     }
 
     /**
@@ -29,6 +33,18 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:10|unique:subjects,code,' . ($request->route('id') ?? 'NULL') . ',id',
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'credits' => 'required|string',
+        ]);
+
+
+        Subject::create($validatedData);
+        $subjects = Subject::all() ?? [];
+
+        return view('subject.index', compact('subjects'));
     }
 
     /**
@@ -42,17 +58,45 @@ class SubjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Subject $subject)
+    public function edit($id)
     {
         //
+        $subject = Subject::find($id);
+
+        if (!$subject) {
+            return redirect()->route('subject.index')->with('error', 'Subject not found');
+
+        }
+
+        return view('subject.edit', compact('subject'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:10|unique:subjects,code,' . ($request->route('id') ?? 'NULL') . ',id',
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'credits' => 'required|string',
+        ]);
+
+        $subject = Subject::find($id);
+
+        if (!$subject) {
+            return redirect()->route('subject.index')->with('error', 'Subject not found');
+        }
+
+        $subject->code = $validatedData['code'];
+        $subject->name = $validatedData['name'];
+        $subject->description = $validatedData['description'];
+        $subject->credits = $validatedData['credits'];
+        $subject->save();
+
+        return redirect()->route('subject.index')->with('success', 'Subject updated successfully');
     }
 
     /**

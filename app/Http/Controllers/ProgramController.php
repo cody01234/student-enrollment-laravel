@@ -13,6 +13,9 @@ class ProgramController extends Controller
     public function index()
     {
         //
+        $programs = Program::all();
+
+        return view('program.index', compact('programs'));
     }
 
     /**
@@ -21,6 +24,8 @@ class ProgramController extends Controller
     public function create()
     {
         //
+        return view('program.add');
+
     }
 
     /**
@@ -29,6 +34,17 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:10|unique:programs,code,' . ($request->route('id') ?? 'NULL') . ',id',
+            'name' => 'required|string',
+        ]);
+
+
+        Program::create($validatedData);
+        $programs = Program::all() ?? [];
+
+        return view('program.index', compact('programs'));
+
     }
 
     /**
@@ -42,18 +58,43 @@ class ProgramController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Program $program)
+    public function edit($id)
     {
         //
+        $program = Program::find($id);
+
+        if (!$program) {
+            return redirect()->route('program.index')->with('error', 'Program not found');
+
+        }
+
+        return view('program.edit', compact('program'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Program $program)
+    public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:10|unique:programs,code,' . $id . ',id',
+            'name' => 'required|string',
+        ]);
+
+        $program = Program::find($id);
+
+        if (!$program) {
+            return redirect()->route('program.index')->with('error', 'Program not found');
+        }
+
+        $program->code = $validatedData['code'];
+        $program->name = $validatedData['name'];
+        $program->save();
+
+        return redirect()->route('program.index')->with('success', 'Program updated successfully');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

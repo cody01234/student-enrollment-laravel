@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Program;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        //
+        $teachers = Teacher::all();
+
+        return view('teacher.index', compact('teachers'));
     }
 
     /**
@@ -21,6 +24,8 @@ class TeacherController extends Controller
     public function create()
     {
         //
+        $programs = Program::all();
+        return view('teacher.add', compact('programs'));
     }
 
     /**
@@ -29,6 +34,19 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'sex' => 'required',
+            'birthday' => 'required|date',
+            'program_id' => 'required',
+        ]);
+
+
+        Teacher::create($validatedData);
+
+        return redirect()->route('teacher.index')->with('success', 'Teacher created successfully.');
+
     }
 
     /**
@@ -42,17 +60,43 @@ class TeacherController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Teacher $teacher)
+    public function edit($id)
     {
         //
+        $programs = Program::all();
+        $teacher = Teacher::find($id);
+
+        if (!$teacher) {
+            return redirect()->route('teacher.index')->with('error', 'Teacher not found');
+
+        }
+
+        return view('teacher.edit', compact('teacher', 'programs'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Teacher $teacher)
+    public function update(Request $request, $id)
     {
-        //
+        $teacher = Teacher::find($id);
+
+        if (!$teacher) {
+            return redirect()->route('teacher.index')->with('error', 'Teacher not found');
+        }
+
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'sex' => 'required',
+            'birthday' => 'required|date',
+            'program_id' => 'required',
+        ]);
+
+        $teacher->update($validatedData);
+
+        return redirect()->route('teacher.index')->with('success', 'Teacher updated successfully.');
+
     }
 
     /**
