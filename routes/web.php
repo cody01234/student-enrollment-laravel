@@ -2,6 +2,7 @@
 <?php
 # Arvin Reil Tupal
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\StudentController;
@@ -49,3 +50,12 @@ Route::get('/offer/assign-teacher/{offer_id}', [OfferController::class, 'assignT
 Route::post('/offer/store-teacher-assignment', [OfferController::class, 'storeTeacherAssignment'])->name('offer.store_teacher_assignment');
 Route::get('/edit-offer/{id}', [OfferController::class, 'edit'])->name('offer.edit');
 Route::put('/update-offer/{id}', [OfferController::class, 'update'])->name('offer.update');
+
+//managing enrollment
+Route::get('/search-student-page', [EnrollmentController::class, 'index'])->name('enrollment.index');
+Route::get('/search-student', [EnrollmentController::class, 'search'])->name('enrollment.search');
+Route::get('/student/{id}', [EnrollmentController::class, 'show'])->name('enrollment.show_student');
+Route::post('/offer/store-teacher-assignment', [EnrollmentController::class, 'storeTeacherAssignment'])->name('enrollment.store_teacher_assignment');
+Route::post('/enroll', [EnrollmentController::class, 'enroll'])->name('enrollment.enroll');
+Route::delete('/unenroll/{enrollment}', [EnrollmentController::class, 'unenroll'])->name('enrollment.unenroll');
+
